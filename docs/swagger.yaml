@@ -54,7 +54,7 @@ info:
 paths:
   /task:
     get:
-      description: Lust tasks
+      description: List tasks
       parameters:
       - description: Bearer <token>
         in: header
@@ -82,7 +82,7 @@ paths:
                 error:
                   $ref: '#/definitions/model.Response'
               type: object
-      summary: Lust tasks
+      summary: List tasks
       tags:
       - task
     post:

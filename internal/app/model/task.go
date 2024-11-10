@@ -11,6 +11,16 @@ type Task struct {
 	UpdatedAt   time.Time        `json:"updated_at" gorm:"type:timestamptz;not null"`
 }
 
+type TaskResponse struct {
+	ID          int              `json:"id"`
+	Title       string           `json:"title"`
+	Description string           `json:"description"`
+	Status      StatusOfTaskEnum `json:"status"`
+	StatusName  *string          `json:"status_name"`
+	CreatedAt   time.Time        `json:"created_at"`
+	UpdatedAt   time.Time        `json:"updated_at"`
+}
+
 type TaskRequest struct {
 	Title       string           `json:"title"`
 	Description string           `json:"description"`

@@ -17,20 +17,20 @@ func NewTaskService() *TaskService {
 	}
 }
 
-func (s *TaskService) ListTasks() ([]model.Task, error) {
-	admins, err := s.taskRepository.ListTasks()
+func (s *TaskService) ListTasks() ([]model.TaskResponse, error) {
+	tasks, err := s.taskRepository.ListTasks()
 	if err != nil {
 		return nil, err
 	}
-	return admins, nil
+	return tasks, nil
 }
 
-func (s *TaskService) GetTaskByID(id int) (*model.Task, error) {
-	admin, err := s.taskRepository.GetTaskByID(id)
+func (s *TaskService) GetTaskByID(id int) (*model.TaskResponse, error) {
+	task, err := s.taskRepository.GetTaskByID(id)
 	if err != nil {
 		return nil, err
 	}
-	return admin, nil
+	return task, nil
 }
 
 func (s *TaskService) CreateTask(taskRequest model.TaskRequest) (*model.Task, error) {
@@ -60,7 +60,14 @@ func (s *TaskService) UpdateTask(id int, taskUpdateRequest model.TaskUpdateReque
 		task.Status = *taskUpdateRequest.Status
 	}
 
-	err = s.taskRepository.UpdateTask(task.ID, *task)
+	err = s.taskRepository.UpdateTask(task.ID, model.Task{
+		ID:          task.ID,
+		Title:       task.Title,
+		Description: task.Description,
+		Status:      task.Status,
+		CreatedAt:   task.CreatedAt,
+		UpdatedAt:   task.UpdatedAt,
+	})
 	if err != nil {
 		return err
 	}

@@ -19,8 +19,8 @@ func NewTaskHandler() *TaskHandler {
 }
 
 // ListTasks returns tasks
-// @Summary Lust tasks
-// @Description Lust tasks
+// @Summary List tasks
+// @Description List tasks
 // @Tags task
 // @Produce json
 // @Param Authorization header string true "Bearer <token>"

@@ -17,14 +17,14 @@ const docTemplate = `{
     "paths": {
         "/task": {
             "get": {
-                "description": "Lust tasks",
+                "description": "List tasks",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "task"
                 ],
-                "summary": "Lust tasks",
+                "summary": "List tasks",
                 "parameters": [
                     {
                         "type": "string",

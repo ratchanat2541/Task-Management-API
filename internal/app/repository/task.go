@@ -2,6 +2,7 @@ package repository
 
 import (
 	"task-management-api/internal/app/model"
+	"task-management-api/internal/util"
 	"time"
 
 	"gorm.io/gorm"
@@ -17,7 +18,32 @@ func NewTaskRepository(db *gorm.DB) *TaskRepository {
 	}
 }
 
-func (r *TaskRepository) GetTaskByID(id int) (*model.Task, error) {
+func (r *TaskRepository) ListTasks() ([]model.TaskResponse, error) {
+	var tasks []model.Task
+
+	err := r.db.
+		Model(&model.Task{}).
+		Find(&tasks).
+		Error
+	if err != nil {
+		return nil, err
+	}
+
+	tasksResponse := make([]model.TaskResponse, len(tasks))
+	for index, value := range tasks {
+		tasksResponse[index].ID = value.ID
+		tasksResponse[index].Title = value.Title
+		tasksResponse[index].Description = value.Description
+		tasksResponse[index].Status = value.Status
+		tasksResponse[index].StatusName = util.NewString(model.StatusOfEventCupNameEnums[value.Status])
+		tasksResponse[index].CreatedAt = value.CreatedAt
+		tasksResponse[index].UpdatedAt = value.UpdatedAt
+	}
+
+	return tasksResponse, nil
+}
+
+func (r *TaskRepository) GetTaskByID(id int) (*model.TaskResponse, error) {
 	task := new(model.Task)
 
 	err := r.db.
@@ -29,21 +55,17 @@ func (r *TaskRepository) GetTaskByID(id int) (*model.Task, error) {
 		return nil, err
 	}
 
-	return task, nil
-}
-
-func (r *TaskRepository) ListTasks() ([]model.Task, error) {
-	var tasks []model.Task
-
-	err := r.db.
-		Model(&model.Task{}).
-		Find(&tasks).
-		Error
-	if err != nil {
-		return nil, err
+	taskResponse := model.TaskResponse{
+		ID:          task.ID,
+		Title:       task.Title,
+		Description: task.Description,
+		Status:      task.Status,
+		StatusName:  util.NewString(model.StatusOfEventCupNameEnums[task.Status]),
+		CreatedAt:   task.CreatedAt,
+		UpdatedAt:   task.UpdatedAt,
 	}
 
-	return tasks, nil
+	return &taskResponse, nil
 }
 
 func (r *TaskRepository) CreateTask(taskRequest model.TaskRequest) (*model.Task, error) {
