@@ -54,12 +54,12 @@ func (h *TaskHandler) GetTaskByID(c *fiber.Ctx) error {
 		return c.JSON(model.Response{Code: http.StatusBadRequest, Message: "Error ParamsInt", Data: err.Error()})
 	}
 
-	admin, err := h.taskService.GetTaskByID(id)
+	task, err := h.taskService.GetTaskByID(id)
 	if err != nil {
 		return c.JSON(model.Response{Code: http.StatusInternalServerError, Message: "Error Get by id", Data: err.Error()})
 	}
 
-	return c.JSON(model.Response{Code: http.StatusOK, Data: admin})
+	return c.JSON(model.Response{Code: http.StatusOK, Data: task})
 }
 
 // CreateTask

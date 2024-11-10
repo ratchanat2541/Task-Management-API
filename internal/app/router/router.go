@@ -23,7 +23,7 @@ func SetupRoutes(app *fiber.App) {
 
 	v1 := api.Group("v1")
 
-	// Admin API
+	// Task API
 	taskGroup := v1.Group("task", JWTAuthMiddleware)
 	{
 		taskGroup.Get("/", taskHandler.ListTasks)
